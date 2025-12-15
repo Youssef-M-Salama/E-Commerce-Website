@@ -1,0 +1,31 @@
+﻿@model List<Category>
+<div class="container-fluid px-4">
+    <h2 class="mt-4 text-center text-uppercase" style="letter-spacing:4px">All Category</h2>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <a href="@Url.Action("AddCategory", "Admin" )" class="my-3 btn btn-primary">Add</a>
+        <table class="table table-bordered table-striped text-center">
+            <thead>
+                <tr>
+                    <th>Category Id</th>
+                    <th>Category Name</th>   
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var category in Model)
+                {
+                    <tr>
+                        <td>@category.CategoryId</td>
+                        <td>@category.CategoryName</td>
+                        <td>
+                            <a href="@Url.Action("UpdateCategory", "Admin", new { id = category.CategoryId })" class="btn btn-warning">Update</a>
+                            <a href="@Url.Action("DeletePermissionCategory", "Admin", new { id = category.CategoryId })" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

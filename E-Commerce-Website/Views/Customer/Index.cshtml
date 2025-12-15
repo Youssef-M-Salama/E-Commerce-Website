@@ -1,0 +1,299 @@
+﻿    @{
+        ViewData["Title"] = "Index";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+        var products = ViewData["Products"] as List<E_Commerce_Website.Models.Product>;
+        var categories = ViewData["Categories"] as List<E_Commerce_Website.Models.Category>;
+    }
+
+    <h2>@ViewBag.checkSession</h2>
+
+    <main class="main">
+        <div class="mb-2"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3 d-none d-xl-block">
+                    <nav class="side-nav">
+                        <div class="sidenav-title">Browse Categories</div>
+                        <ul class="menu-vertical sf-arrows">
+                            @Html.Partial("FetchCategoryList", categories)
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Banners remain static (as they are promotional) -->
+                <div class="col-lg-8 col-xl-6">
+                    <div class="banner banner-overlay banner-lg content-left">
+                        <a href="#"><img src="~/website/images/demos/demo-19/banners/banner-1.jpg" alt="Banner"></a>
+                        <div class="banner-content">
+                            <h4 class="banner-subtitle">Pre-order now</h4>
+                            <img src="~/website/images/demos/demo-19/banners/banner-1-title.png" alt="Banner 1 Title" width="217" height="54" class="mb-1">
+                            <a href="#" class="banner-link size-lg">Pre-Order Now<i class="icon-long-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-4 col-xl-3">
+                    <div class="banner banner-overlay banner-sm content-right">
+                        <a href="#"><img src="~/website/images/demos/demo-19/banners/banner-2.jpg" alt="Banner"></a>
+                        <div class="banner-content text-right">
+                            <h4 class="banner-subtitle">Weekend Offer</h4>
+                            <img class="banner-title-img" src="~/website/images/demos/demo-19/banners/banner-2-title.png" alt="Banner-2">
+                            <h4 class="banner-price">Save<span class="price">$19.99</span></h4>
+                            <a href="#" class="banner-link">Buy Now<i class="icon-long-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="banner banner-overlay d-none d-lg-block banner-sm content-right align-center">
+                        <a href="#"><img src="~/website/images/demos/demo-19/banners/banner-3.jpg" alt="Banner"></a>
+                        <div class="banner-content text-right">
+                            <img class="banner-title-img" src="~/website/images/demos/demo-19/banners/banner-3-title.png" alt="Banner-3">
+                            <h5 class="text-white">35% OFF</h5>
+                            <a href="#" class="banner-link">Buy Now<i class="icon-long-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3">
+                    <div class="banner banner-overlay banner-sm content-right align-center">
+                        <a href="#"><img src="~/website/images/demos/demo-19/banners/banner-4.jpg" alt="Banner"></a>
+                        <div class="banner-content" style="left: auto; right: 3rem; align-items: flex-start;">
+                            <h4 class="banner-subtitle">Weekend Sale</h4>
+                            <img class="banner-title-img" src="~/website/images/demos/demo-19/banners/banner-4-title.png" alt="Banner-4">
+                            <h4 class="banner-price"><span class="off">25% off</span></h4>
+                            <a href="#" class="banner-link">Buy Now<i class="icon-long-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-9">
+                    <div class="banner banner-overlay banner-lg">
+                        <a href="#"><img src="~/website/images/demos/demo-19/banners/banner-5.jpg" alt="Banner"></a>
+                        <div class="banner-content">
+                            <h4 class="banner-subtitle">Amazing Value</h4>
+                            <img class="banner-title-img mb-1" src="~/website/images/demos/demo-19/banners/banner-5-title.png" alt="Banner-5">
+                            <a href="#" class="banner-link">Pre-Order Now<i class="icon-long-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Icon Boxes -->
+        <div class="icon-boxes-container icon-boxes-separator bg-transparent">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="icon-box icon-box-side">
+                            <span class="icon-box-icon"><i class="icon-rocket"></i></span>
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">Free Shipping</h3>
+                                <p>Orders $50 or more</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="icon-box icon-box-side">
+                            <span class="icon-box-icon"><i class="icon-rotate-left"></i></span>
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">Free Returns</h3>
+                                <p>Within 30 days</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="icon-box icon-box-side">
+                            <span class="icon-box-icon"><i class="icon-info-circle"></i></span>
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">Get 20% Off 1 Item</h3>
+                                <p>When you sign up</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="icon-box icon-box-side">
+                            <span class="icon-box-icon"><i class="icon-life-ring"></i></span>
+                            <div class="icon-box-content">
+                                <h3 class="icon-box-title">We Support</h3>
+                                <p>24/7 amazing services</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Products Section -->
+        <div class="bg-light pt-3 pb-5 mb-5">
+            <div class="container">
+                <ul class="nav nav-pills nav-big nav-border-anim justify-content-center mb-5" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="products-all-link" data-toggle="tab" href="#products-all-tab" role="tab">All Products</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content tab-content-carousel">
+                    <div class="tab-pane p-0 fade show active" id="products-all-tab" role="tabpanel">
+                        <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl"
+                            data-owl-options='{
+                                "nav": false,
+                                "dots": true,
+                                "margin": 20,
+                                "loop": false,
+                                "responsive": {
+                                    "0": { "items": 2 },
+                                    "480": { "items": 2 },
+                                    "768": { "items": 3 },
+                                    "992": { "items": 4 },
+                                    "1200": { "items": 5, "nav": true }
+                                }
+                            }'>
+
+                            @if (products != null && products.Any())
+                            {
+                                @foreach (var product in products)
+                                {
+                                    <div class="product">
+                                        <figure class="product-media">
+                                            <a href="@Url.Action("ProductDetails", "Customer", new { id = product.ProductId })">
+                                                <img src="~/ProductImage/@product.ProductImage" alt="@product.ProductName" class="product-image">
+                                            </a>
+                                            <div class="product-action-vertical">
+                                                <a href="#" class="btn-product-icon btn-wishlist" title="Add to Wishlist"><span>add to wishlist</span></a>
+                                            </div>
+                                            <div class="product-action">
+                                                <form asp-action="AddToCart" asp-controller="Customer" method="post">
+                                                    <input type="hidden" name="ProductId" value="@product.ProductId">
+                                                    <button type="submit" class="btn-product btn-cart"><span>add to cart</span></button>
+                                                </form>
+                                                @* <a href="#" class="btn-product btn-cart"></a> *@
+                                            </div>
+                                        </figure>
+                                        <div class="product-body">
+                                            @if (product.Category != null)
+                                            {
+                                                <div class="product-cat">
+                                                    <a href="#">@product.Category.CategoryName</a>
+                                                </div>
+                                            }
+                                            <h3 class="product-title">
+                                                <a href="@Url.Action("Details", "Product", new { id = product.ProductId })">@product.ProductName</a>
+                                            </h3>
+                                            <div class="product-price">
+                                                $@product.ProductPrice      
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p>No products available.</p>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Remaining banners and sections (static, as before) -->
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-sm-6 col-md-4">
+                    <div class="banner banner-overlay banner-sm banner-ad content-left align-center">
+                        <a href="#"><img src="~/website/images/demos/demo-19/banners/banner-6.jpg" alt="Banner"></a>
+                        <div class="banner-content">
+                            <h4 class="banner-subtitle">Weekend Offer</h4>
+                            <img class="banner-title-img" src="~/website/images/demos/demo-19/banners/banner-6-title.png" alt="Banner-6">
+                            <h4 class="banner-price"><span class="off" style="font-weight: 600;">Save <span class="price">$19.99</span></span></h4>
+                            <a href="#" class="banner-link">Buy Now<i class="icon-long-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    <div class="banner banner-overlay banner-sm banner-ad content-left align-center">
+                        <a href="#"><img src="~/website/images/demos/demo-19/banners/banner-7.jpg" alt="Banner"></a>
+                        <div class="banner-content">
+                            <h4 class="banner-subtitle" style="letter-spacing: 0.1em;">Amazing Deal on an</h4>
+                            <h2 class="banner-title mb-0" style="font-size: 3rem;">XBOX ONE</h2>
+                            <h4 class="banner-price"><span class="off" style="font-weight: 600;">Save $50</span></h4>
+                            <a href="#" class="banner-link">Buy Now<i class="icon-long-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    <div class="banner banner-overlay banner-sm banner-ad content-left align-center">
+                        <a href="#"><img src="~/website/images/demos/demo-19/banners/banner-8.jpg" alt="Banner"></a>
+                        <div class="banner-content">
+                            <h4 class="banner-price text-white mb-1">Save $29.00</h4>
+                            <img class="banner-title-img mb-2" src="~/website/images/demos/demo-19/banners/banner-8-title.png" alt="Banner-8">
+                            <a href="#" class="banner-link">Buy Now<i class="icon-long-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <hr class="mt-0 mb-4">
+        </div>
+
+        <!-- Newsletter, Blog, etc. remain unchanged -->
+
+        <div class="container">
+            <div class="cta cta-horizontal cta-horizontal-box bg-image mb-4">
+                <div class="row align-items-center">
+                    <div class="col-lg-5">
+                        <h3 class="cta-title text-primary">Join Our Newsletter</h3>
+                        <p class="cta-desc text-light">Subscribe to get information about products and coupons</p>
+                    </div>
+                    <div class="col-lg-7 d-flex justify-content-lg-end">
+                        <form action="#">
+                            <div class="input-group">
+                                <input type="email" class="form-control form-control-white" placeholder="Enter your Email Address" required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary-white btn-rounded" type="submit"><span>Subscribe</span><i class="icon-long-arrow-right"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="blog-posts bg-light pt-4 pb-5">
+            <div class="container">
+                <div class="heading heading-flex mb-2">
+                    <div class="heading-left">
+                        <h2 class="title mb-0">From Our Blog</h2>
+                    </div>
+                    <div class="heading-right">
+                        <a href="blog.html" class="title-link">View more articles <i class="icon-long-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="owl-carousel owl-simple carousel-equal-height" data-toggle="owl"
+                    data-owl-options='{
+                        "nav": false,
+                        "dots": true,
+                        "items": 3,
+                        "margin": 20,
+                        "loop": false,
+                        "responsive": {
+                            "0": { "items": 1 },
+                            "600": { "items": 2 },
+                            "992": { "items": 3 },
+                            "1200": { "items": 4, "nav": true }
+                        }
+                    }'>
+                    <!-- Blog items remain static or can be made dynamic later -->
+                    <article class="entry">
+                        <figure class="entry-media"><a href="single.html"><img src="~/website/images/demos/demo-19/blog/post-1.jpg" alt="image desc"></a></figure>
+                        <div class="entry-body">
+                            <div class="entry-meta"><a href="#">Nov 22, 2018</a>, 0 Comments</div>
+                            <h3 class="entry-title"><a href="single.html">Morbi in sem quis dui placerat mauris sit ornare.</a></h3>
+                        </div>
+                    </article>
+                    <!-- Add more blog entries as needed -->
+                </div>
+            </div>
+        </div>
+    </main>

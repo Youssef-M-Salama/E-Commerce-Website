@@ -1,0 +1,92 @@
+﻿@model E_Commerce_Website.Models.Product
+
+@{
+    ViewData["Title"] = Model?.ProductName ?? "Product Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+
+    @if (Model == null)
+    {
+        <h3>Product not found.</h3>
+        return;
+    }
+
+    <div class="row">
+
+        <!-- PRODUCT IMAGE -->
+        <div class="col-md-5">
+            <img src="~/ProductImage/@Model.ProductImage"
+                 alt="@Model.ProductName"
+                 style="width:100%; max-height:400px; object-fit:contain;" />
+        </div>
+
+        <!-- PRODUCT INFO -->
+        <div class="col-md-7">
+
+            <h2>@Model.ProductName</h2>
+
+            @if (Model.Category != null)
+            {
+                <p><strong>Category:</strong> @Model.Category.CategoryName</p>
+            }
+
+            <h4 class="text-success">
+                $@Model.ProductPrice.ToString("N2")
+            </h4>
+
+            <p>
+                @Model.ProductDescription
+            </p>
+
+            <hr />
+
+            <!-- QUANTITY -->
+            <div class="mb-3">
+                <label>Quantity</label>
+                <input type="number"
+                       id="quantity"
+                       class="form-control"
+                       value="1"
+                       min="1"
+                       max="99"
+                       style="width:120px;" />
+            </div>
+
+            <!-- ACTION -->
+            @if (string.IsNullOrEmpty(ViewBag.checkSession))
+            {
+                <a href="@Url.Action("CustomerLogin", "Customer")"
+                   class="btn btn-warning">
+                    Login to Add to Cart
+                </a>
+            }
+            else
+            {
+                <form asp-action="AddToCartFromDetails"
+                      asp-controller="Customer"
+                      method="post">
+                    <input type="hidden" name="productId" value="@Model.ProductId" />
+                    <input type="hidden" name="quantity" id="hiddenQuantity" value="1" />
+
+                    <button type="submit" class="btn btn-primary">
+                        Add to Cart
+                    </button>
+                </form>
+            }
+
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('quantity').addEventListener('change', function () {
+        let q = parseInt(this.value);
+        if (isNaN(q) || q < 1) q = 1;
+        if (q > 99) q = 99;
+
+        this.value = q;
+        document.getElementById('hiddenQuantity').value = q;
+    });
+</script>

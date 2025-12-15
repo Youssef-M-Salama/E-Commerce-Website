@@ -1,0 +1,23 @@
+﻿@model Customer
+<div class="container-fluid px-4">
+    <h2 class="mt-4 text-center text-uppercase" style="letter-spacing:4px">Update Customer</h2>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <form  method="post" enctype="multipart/form-data">
+            <input type="hidden" name="customerId" value="@Model?.CustomerId" />
+            <input type="text" placeholder="Enter Customer Name" name="customerName" value="@Model?.CustomerName" class="form-control my-3 " />
+            <input type="text" placeholder="Enter Customer Email" name="customerEmail" value="@Model?.CustomerEmail" class="form-control my-3 " />
+            <input type="text" placeholder="Enter Customer Password" name="customerGender" value="@Model?.CustomerGender" class="form-control my-3 " />
+            <input type="password" placeholder="Enter Customer Gender" name="customerPassword" class="form-control my-3 " />
+            <input type="text" placeholder="Enter Customer Phone" name="customerPhone" value="@Model?.CustomerPhone" class="form-control my-3" />
+            <input type="text" placeholder="Enter Customer Country" name="customerCountry" value="@Model?.CustomerCountry" class="form-control my-3" />
+            <input type="text" placeholder="Enter Customer City" name="customerCity" value="@Model?.CustomerCity" class="form-control my-3" />
+            <input type="text" placeholder="Enter Customer Address" name="customerAddress" value="@Model?.CustomerAddress" class="form-control my-3" />
+            <input type="file" name="CustomerImage" class="form-control my-3" />
+            <input type="submit" value="Update Customer" class="form-control my-3 btn btn-primary" />
+        </form>
+    </div>
+    <div class="col-md-2"></div>
+    </div> 
