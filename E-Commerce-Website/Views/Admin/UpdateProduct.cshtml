@@ -1,0 +1,19 @@
+﻿@model Product
+<div class="container-fluid px-4">
+    <h2 class="mt-4 text-center text-uppercase" style="letter-spacing:4px">Update Product</h2>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <form method="post" enctype="multipart/form-data" asp-action="UpdateProduct" asp-controller="Admin">
+            <input type="hidden" name="ProductId" value="@Model?.ProductId" />
+            <input type="text" placeholder="Enter Product Name" name="ProductName" value="@Model?.ProductName" class="form-control my-3 " />
+            <input type="text" placeholder="Enter Product Price" name="ProductPrice" value="@Model?.ProductPrice" class="form-control my-3 " />
+            <input type="text" placeholder="Enter Product Description" name="ProductDescription" value="@Model?.ProductDescription" class="form-control my-3 " />
+            @Html.Partial("CategoryDropDown", ViewData["category"])
+            <input type="file" name="ProductImage" class="form-control my-3" />
+            <input type="submit" value="Update Product" class="form-control my-3 btn btn-primary" />
+        </form>
+    </div>
+    <div class="col-md-2"></div>
+</div> 

@@ -1,0 +1,31 @@
+﻿@model Admin
+<div class="container-fluid px-4">
+    <h2 class="mt-4 text-center text-uppercase" style="letter-spacing:4px">My Profile</h2>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <form method="post">
+            <input type="hidden" name="adminId" value="@Model?.AdminId"/>
+            <input type="text" placeholder="Enter Your Name" name="adminName" value="@Model?.AdminName" class="form-control my-3 "/>
+            <input type="text" placeholder="Enter Your Email" name="adminEmail" value="@Model?.AdminEmail" class="form-control my-3"  />
+            <input type="password" placeholder="Enter Your Passowrd" name="adminPassword" value="@Model?.AdminPassword" class="form-control my-3" />
+            <input type="submit" value="Update Profile" class="form-control my-3 btn btn-primary"/>
+            <input type="hidden" name="adminImage" value="@Model?.AdminImage"/>
+        </form>
+        <form method="post" asp-action="ChangeProfileImage" asp-controller="Admin" enctype="multipart/form-data">
+            <input type="hidden" name="AdminId" value="@Model?.AdminId" />
+            <input type="hidden" name="AdminName" value="@Model?.AdminName" />
+            <input type="hidden" name="AdminEmail" value="@Model?.AdminEmail" />
+            <input type="hidden" name="AdminPassword" value="@Model?.AdminPassword" />
+            <input type="hidden" name="AdminImage" value="@Model?.AdminImage" />
+
+            <input type="file" name="imageFile" class="form-control my-3" />
+
+            <img src="@("~/AdminImage/" + Model?.AdminImage)" alt="Alternate Text" asp-append-version="true" style="height:250px; width:250px" />
+            <input type="submit" value="Update Image" class="form-control my-3 btn btn-primary" />
+        </form>
+
+    </div>
+    <div class="col-md-2"></div>
+</div>

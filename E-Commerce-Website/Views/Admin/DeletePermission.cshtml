@@ -1,0 +1,24 @@
+﻿@model Customer
+<div class="container-fluid px-4">
+    <h2 class="mt-4 text-center text-uppercase text-danger" style="letter-spacing:4px">Are you sure you want to delete this customer</h2>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <img src="@("~/CustomerImage/" + Model.CustomerImage)" alt="Alternate Text" style="height:250px; width:250px" asp-append-version="true" />
+        <ul class="list-group">
+            <li class="list-group-item">Customer Id : @Model.CustomerId</li>
+            <li class="list-group-item">Customer Name : @Model.CustomerName</li>
+            <li class="list-group-item">Customer Phone : @Model.CustomerPhone</li>
+            <li class="list-group-item">Customer Email : @Model.CustomerEmail</li>
+            <li class="list-group-item">Customer Password : @Model.CustomerPassword</li>
+            <li class="list-group-item">Customer Gender : @Model.CustomerGender</li>
+            <li class="list-group-item">Customer Country : @Model.CustomerCountry</li>
+            <li class="list-group-item">Customer City : @Model.CustomerCity</li>
+            <li class="list-group-item">Customer Address : @Model.CustomerAddress</li>
+        </ul>
+        <a href="@Url.Action("DeleteCustomer", "Admin", new { id = Model.CustomerId })" class="btn btn-danger">Delete</a>
+        <a href="@Url.Action("FetchCustomer", "Admin")" class="btn btn-warning">Back to customer list</a>
+    </div>
+    <div class="col-md-2"></div>
+</div>

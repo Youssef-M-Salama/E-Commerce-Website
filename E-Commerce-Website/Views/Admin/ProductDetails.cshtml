@@ -1,0 +1,21 @@
+﻿@model Product
+<div class="container-fluid px-4">
+    <h2 class="mt-4 text-center text-uppercase text-danger" style="letter-spacing:4px">Product details</h2>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <img src="@("~/ProductImage/" + Model.ProductImage)" alt="Alternate Text" style="height:250px; width:250px" asp-append-version="true" />
+        <ul class="list-group">
+            <li class="list-group-item">Product Id : @Model?.ProductId</li>
+            <li class="list-group-item">Product Name : @Model?.ProductName</li>
+            <li class="list-group-item">Product Price : @Model?.ProductPrice</li>
+            <li class="list-group-item">Product Description : @Model?.ProductDescription</li>
+            <li class="list-group-item">Category : @Model?.Category?.CategoryName</li>
+            
+
+        </ul>
+
+    </div>
+    <div class="col-md-2"></div>
+</div>
