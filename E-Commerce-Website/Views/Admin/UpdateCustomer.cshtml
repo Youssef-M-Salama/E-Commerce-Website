@@ -1,23 +1,69 @@
 ﻿@model Customer
+@{
+    ViewData["Title"] = "Edit Customer";
+     Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
 <div class="container-fluid px-4">
-    <h2 class="mt-4 text-center text-uppercase" style="letter-spacing:4px">Update Customer</h2>
+    <h2 class="mt-4 text-center text-uppercase">Update Customer</h2>
 </div>
-<div class="row">
-    <div class="col-md-2"></div>
+<div class="row justify-content-center">
     <div class="col-md-8">
-        <form  method="post" enctype="multipart/form-data">
-            <input type="hidden" name="customerId" value="@Model?.CustomerId" />
-            <input type="text" placeholder="Enter Customer Name" name="customerName" value="@Model?.CustomerName" class="form-control my-3 " />
-            <input type="text" placeholder="Enter Customer Email" name="customerEmail" value="@Model?.CustomerEmail" class="form-control my-3 " />
-            <input type="text" placeholder="Enter Customer Password" name="customerGender" value="@Model?.CustomerGender" class="form-control my-3 " />
-            <input type="password" placeholder="Enter Customer Gender" name="customerPassword" class="form-control my-3 " />
-            <input type="text" placeholder="Enter Customer Phone" name="customerPhone" value="@Model?.CustomerPhone" class="form-control my-3" />
-            <input type="text" placeholder="Enter Customer Country" name="customerCountry" value="@Model?.CustomerCountry" class="form-control my-3" />
-            <input type="text" placeholder="Enter Customer City" name="customerCity" value="@Model?.CustomerCity" class="form-control my-3" />
-            <input type="text" placeholder="Enter Customer Address" name="customerAddress" value="@Model?.CustomerAddress" class="form-control my-3" />
-            <input type="file" name="CustomerImage" class="form-control my-3" />
-            <input type="submit" value="Update Customer" class="form-control my-3 btn btn-primary" />
+        <form method="post" asp-action="UpdateCustomer" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="CustomerId" />
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="CustomerName" class="form-label">Name</label>
+                        <input asp-for="CustomerName" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CustomerEmail" class="form-label">Email</label>
+                        <input asp-for="CustomerEmail" type="email" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CustomerPassword" class="form-label">Password (leave blank to keep)</label>
+                        <input asp-for="CustomerPassword" type="password" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CustomerGender" class="form-label">Gender</label>
+                        <input asp-for="CustomerGender" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="CustomerPhone" class="form-label">Phone</label>
+                        <input asp-for="CustomerPhone" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CustomerCountry" class="form-label">Country</label>
+                        <input asp-for="CustomerCountry" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CustomerCity" class="form-label">City</label>
+                        <input asp-for="CustomerCity" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CustomerAddress" class="form-label">Address</label>
+                        <input asp-for="CustomerAddress" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Profile Image</label>
+                @if (!string.IsNullOrEmpty(Model.CustomerImage))
+                {
+                    <img src="~/CustomerImage/@Model.CustomerImage" 
+                         alt="Profile" class="img-thumbnail mb-2"
+                         style="height: 100px; object-fit: cover;" />
+                }
+                <input name="customerImage" type="file" class="form-control" accept="image/*" />
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Update Customer</button>
+            <a asp-action="FetchCustomer" class="btn btn-outline-secondary mt-2 w-100">Cancel</a>
         </form>
     </div>
-    <div class="col-md-2"></div>
-    </div> 
+</div>

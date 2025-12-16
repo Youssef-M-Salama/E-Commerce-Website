@@ -1,18 +1,54 @@
 ﻿@model Product
+@{
+    ViewData["Title"] = "Add Product";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
 <div class="container-fluid px-4">
     <h2 class="mt-4 text-center text-uppercase" style="letter-spacing:4px">Add New Product</h2>
 </div>
-<div class="row">
-    <div class="col-md-2"></div>
+
+<div class="row justify-content-center">
     <div class="col-md-8">
-        <form method="post" enctype="multipart/form-data">
-            <input type="text" placeholder="Enter Product Name" name="ProductName" class="form-control my-3 " />
-            <input type="text" placeholder="Enter Product Price" name="ProductPrice" class="form-control my-3 " />
-            <input type="text" placeholder="Enter Product Description" name="ProductDescription" class="form-control my-3 " />
-            <input type="file" name="ProductImage" class="form-control my-3 " />
-            @Html.Partial("CategoryDropDown", ViewData["category"])
-            <input type="submit" value="Add Category" class="form-control my-3 btn btn-primary" />
+        <form asp-action="AddProduct" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label asp-for="ProductName" class="form-label">Product Name *</label>
+                <input asp-for="ProductName" class="form-control" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ProductPrice" class="form-label">Price (USD) *</label>
+                <input asp-for="ProductPrice" class="form-control" type="number" step="0.01" min="0" />
+                <span asp-validation-for="ProductPrice" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ProductDescription" class="form-label">Description *</label>
+                <textarea asp-for="ProductDescription" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="ProductDescription" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CategoryId" class="form-label">Category *</label>
+                @Html.Partial("CategoryDropDown", ViewData["Categories"])
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Product Image *</label>
+                <input name="productImage" type="file" class="form-control" accept="image/*" required />
+                <div class="form-text">JPG/PNG, max 10MB</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Add Product</button>
+            <a asp-action="FetchProduct" class="btn btn-outline-secondary mt-2 w-100">Cancel</a>
         </form>
     </div>
-    <div class="col-md-2"></div>
-</div> 
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

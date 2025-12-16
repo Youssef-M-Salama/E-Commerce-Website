@@ -1,9 +1,9 @@
 ﻿@model List<Category>
-<select class= "form-select my-3" name="CategoryId">
-    <option hidden>Select Any Category</option>
-    @foreach(var item in Model)
+
+<select class="form-select my-3" asp-for="@ViewData["CategoryId"]" name="CategoryId">
+    <option value="">-- Select Category --</option>
+    @foreach (var item in Model)
     {
-        <option value="@item.CategoryId"
-        selected="@(item.CategoryId==ViewBag.CategoryId)">@item.CategoryName</option>
+        <option value="@item.CategoryId">@item.CategoryName</option>
     }
 </select>

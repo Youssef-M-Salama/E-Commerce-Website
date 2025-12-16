@@ -1,31 +1,67 @@
 ﻿@model Admin
+@{
+    ViewData["Title"] = "My Profile";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
 <div class="container-fluid px-4">
-    <h2 class="mt-4 text-center text-uppercase" style="letter-spacing:4px">My Profile</h2>
+    <h2 class="mt-4 text-center text-uppercase">My Profile</h2>
 </div>
-<div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <form method="post">
-            <input type="hidden" name="adminId" value="@Model?.AdminId"/>
-            <input type="text" placeholder="Enter Your Name" name="adminName" value="@Model?.AdminName" class="form-control my-3 "/>
-            <input type="text" placeholder="Enter Your Email" name="adminEmail" value="@Model?.AdminEmail" class="form-control my-3"  />
-            <input type="password" placeholder="Enter Your Passowrd" name="adminPassword" value="@Model?.AdminPassword" class="form-control my-3" />
-            <input type="submit" value="Update Profile" class="form-control my-3 btn btn-primary"/>
-            <input type="hidden" name="adminImage" value="@Model?.AdminImage"/>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <!-- Update Info -->
+        <form asp-action="Profile" asp-controller="admin" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="AdminId" />
+            <input type="hidden" asp-for="AdminImage" />
+
+            <div class="mb-3">
+                <label asp-for="AdminName" class="form-label">Name</label>
+                <input asp-for="AdminName" class="form-control" />
+                <span asp-validation-for="AdminName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="AdminEmail" class="form-label">Email</label>
+                <input asp-for="AdminEmail" type="email" class="form-control" />
+                <span asp-validation-for="AdminEmail" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="AdminPassword" class="form-label">Password (leave blank to keep)</label>
+                <input asp-for="AdminPassword" type="password" class="form-control" />
+                <span asp-validation-for="AdminPassword" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Update Profile</button>
         </form>
-        <form method="post" asp-action="ChangeProfileImage" asp-controller="Admin" enctype="multipart/form-data">
-            <input type="hidden" name="AdminId" value="@Model?.AdminId" />
-            <input type="hidden" name="AdminName" value="@Model?.AdminName" />
-            <input type="hidden" name="AdminEmail" value="@Model?.AdminEmail" />
-            <input type="hidden" name="AdminPassword" value="@Model?.AdminPassword" />
-            <input type="hidden" name="AdminImage" value="@Model?.AdminImage" />
 
-            <input type="file" name="imageFile" class="form-control my-3" />
+        <!-- Update Image -->
+        <hr />
+        <h5>Profile Image</h5>
+        <form asp-action="ChangeProfileImage" asp-controller="Admin" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="AdminId" />
+            <input type="hidden" asp-for="AdminName" />
+            <input type="hidden" asp-for="AdminEmail" />
+            <input type="hidden" asp-for="AdminPassword" />
+            <input type="hidden" asp-for="AdminImage" />
 
-            <img src="@("~/AdminImage/" + Model?.AdminImage)" alt="Alternate Text" asp-append-version="true" style="height:250px; width:250px" />
-            <input type="submit" value="Update Image" class="form-control my-3 btn btn-primary" />
+            <div class="mb-3">
+                @if (!string.IsNullOrEmpty(Model.AdminImage))
+                {
+                    <img src="~/AdminImage/@Model.AdminImage" 
+                         alt="Profile" class="img-thumbnail mb-2"
+                         style="max-height: 150px; width: auto;" />
+                }
+            </div>
+            <div class="mb-3">
+                <label class="form-label">New Image</label>
+                <input name="imageFile" type="file" class="form-control" accept="image/*" />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Update Image</button>
         </form>
-
     </div>
-    <div class="col-md-2"></div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

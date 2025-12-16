@@ -1,23 +1,45 @@
 ﻿@model Customer
-<div class="container-fluid px-4">
-    <h2 class="mt-4 text-center text-uppercase text-danger" style="letter-spacing:4px">customer details</h2>
-</div>
-<div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <img src="@("~/CustomerImage/" + Model.CustomerImage)" alt="Alternate Text" style="height:250px; width:250px" asp-append-version="true" />
-        <ul class="list-group">
-            <li class="list-group-item">Customer Id : @Model.CustomerId</li>
-            <li class="list-group-item">Customer Name : @Model.CustomerName</li>
-            <li class="list-group-item">Customer Phone : @Model.CustomerPhone</li>
-            <li class="list-group-item">Customer Email : @Model.CustomerEmail</li>
-            <li class="list-group-item">Customer Password : @Model.CustomerPassword</li>
-            <li class="list-group-item">Customer Gender : @Model.CustomerGender</li>
-            <li class="list-group-item">Customer Country : @Model.CustomerCountry</li>
-            <li class="list-group-item">Customer City : @Model.CustomerCity</li>
-            <li class="list-group-item">Customer Address : @Model.CustomerAddress</li>
-        </ul>
+@{
+    ViewData["Title"] = "Customer Details";
+}
 
+<div class="container-fluid px-4">
+    <h2 class="mt-4 text-center text-uppercase text-primary">Customer Details</h2>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="text-center mb-3">
+            @if (!string.IsNullOrEmpty(Model.CustomerImage))
+            {
+                <img src="~/CustomerImage/@Model.CustomerImage" 
+                     alt="Profile" class="rounded-circle img-thumbnail" 
+                     style="width: 180px; height: 180px; object-fit: cover;" />
+            }
+            else
+            {
+                <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" 
+                     style="width: 180px; height: 180px; font-size: 4rem;">
+                    <i class="fas fa-user"></i>
+                </div>
+            }
+        </div>
+
+        <div class="list-group">
+            <div class="list-group-item"><strong>ID:</strong> @Model.CustomerId</div>
+            <div class="list-group-item"><strong>Name:</strong> @Model.CustomerName</div>
+            <div class="list-group-item"><strong>Email:</strong> @Model.CustomerEmail</div>
+            <div class="list-group-item"><strong>Phone:</strong> @Model.CustomerPhone</div>
+            <div class="list-group-item"><strong>Gender:</strong> @Model.CustomerGender</div>
+            <div class="list-group-item"><strong>Location:</strong> @Model.CustomerCountry, @Model.CustomerCity</div>
+            <div class="list-group-item"><strong>Address:</strong> @Model.CustomerAddress</div>
+            <!-- ✅ Never show password -->
+        </div>
+
+        <div class="mt-3">
+            <a asp-action="UpdateCustomer" asp-route-id="@Model.CustomerId" class="btn btn-warning">Edit</a>
+            <a asp-action="DeletePermission" asp-route-id="@Model.CustomerId" class="btn btn-danger">Delete</a>
+            <a asp-action="FetchCustomer" class="btn btn-outline-secondary">Back</a>
+        </div>
     </div>
-    <div class="col-md-2"></div>
 </div>

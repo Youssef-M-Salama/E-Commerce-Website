@@ -1,14 +1,28 @@
 ﻿@model Category
+@{
+    ViewData["Title"] = "Add Category";
+    Layout = "~/Views/Shared/_Dashboard.cshtml"; // or your admin layout
+}
+
 <div class="container-fluid px-4">
-    <h2 class="mt-4 text-center text-uppercase" style="letter-spacing:4px">Category Details</h2>
+    <h2 class="mt-4 text-center text-uppercase" style="letter-spacing:4px">Add New Category</h2>
 </div>
-<div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <form method="post" enctype="multipart/form-data">
-            <input type="text" placeholder="Enter Category Name" name="CategoryName"  class="form-control my-3 " />
-            <input type="submit" value="Add Category" class="form-control my-3 btn btn-primary" />
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form asp-action="AddCategory" method="post">
+            @Html.AntiForgeryToken()
+            <div class="mb-3">
+                <label asp-for="CategoryName" class="form-label">Category Name</label>
+                <input asp-for="CategoryName" class="form-control" placeholder="e.g. Electronics" />
+                <span asp-validation-for="CategoryName" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Add Category</button>
+            <a asp-action="FetchCategory" class="btn btn-outline-secondary mt-2 w-100">Cancel</a>
         </form>
     </div>
-    <div class="col-md-2"></div>
-</div> 
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

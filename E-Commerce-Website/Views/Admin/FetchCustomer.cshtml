@@ -1,22 +1,27 @@
 ﻿@model List<Customer>
+@{
+    ViewData["Title"] = "Customers";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
 <div class="container-fluid px-4">
-    <h2 class="mt-4 text-center text-uppercase" style="letter-spacing:4px">All Customer</h2>
+    <h2 class="mt-4 text-center text-uppercase">All Customers</h2>
 </div>
+
 <div class="row">
     <div class="col-md-12">
         <table class="table table-bordered table-striped text-center">
             <thead>
                 <tr>
-                    <th>Customer Name</th>
-                    <th>Customer Phone</th>
-                    <th>Customer Country</th>
-                    <th>Customer City</th>
-                    <th>Customer Address</th>
-                    <th>Options</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th>Address</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach(var customer in Model)
+                @foreach (var customer in Model)
                 {
                     <tr>
                         <td>@customer.CustomerName</td>
@@ -25,12 +30,12 @@
                         <td>@customer.CustomerCity</td>
                         <td>@customer.CustomerAddress</td>
                         <td>
-                            <a href="@Url.Action("CustomerDetails","Admin",new {id=@customer.CustomerId})" class="btn btn-primary">Details</a>
-                            <a href="@Url.Action("UpdateCustomer","Admin",new {id=@customer.CustomerId})" class="btn btn-warning">Update</a>
-                            <a href="@Url.Action("DeletePermission", "Admin", new { id = @customer.CustomerId })" class="btn btn-danger">Delete</a>
+                            <a asp-action="CustomerDetails" asp-route-id="@customer.CustomerId" class="btn btn-primary btn-sm">Details</a>
+                            <a asp-action="UpdateCustomer" asp-route-id="@customer.CustomerId" class="btn btn-warning btn-sm">Edit</a>
+                            <a asp-action="DeletePermission" asp-route-id="@customer.CustomerId" class="btn btn-danger btn-sm">Delete</a>
                         </td>
                     </tr>
-                }   
+                }
             </tbody>
         </table>
     </div>
