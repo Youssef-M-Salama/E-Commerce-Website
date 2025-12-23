@@ -23,7 +23,7 @@ namespace E_Commerce_Website.Models
                 .HasMany(c => c.Products)
                 .WithOne(p => p.Category)
                 .HasForeignKey(p => p.CategoryId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Product>()
                 .HasOne(p => p.Category)
@@ -34,13 +34,38 @@ namespace E_Commerce_Website.Models
                 .HasOne(c => c.Product)
                 .WithMany()
                 .HasForeignKey(c => c.ProductId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Cart>()
                 .HasOne(c => c.Customer)
                 .WithMany()
                 .HasForeignKey(c => c.CustomerId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Seed default Admin
+            modelBuilder.Entity<Admin>().HasData(new Admin
+            {
+                AdminId = 98798791,
+                AdminName = "SuperAdmin",
+                AdminEmail = "admin@example.com",
+                AdminPassword = "Admin@123", // In production, hash this password!
+                AdminImage = null
+            });
+
+            // Seed default Customer
+            modelBuilder.Entity<Customer>().HasData(new Customer
+            {
+                CustomerId = 187987987,
+                CustomerName = "Default Customer",
+                CustomerEmail = "customer@example.com",
+                CustomerPassword = "Customer@123", // In production, hash this password!
+                CustomerPhone = null,
+                CustomerGender = null,
+                CustomerCountry = null,
+                CustomerCity = null,
+                CustomerAddress = null,
+                CustomerImage = null
+            });
         }
     }
 }

@@ -51,6 +51,15 @@ namespace E_Commerce_Website.Migrations
                     b.HasKey("AdminId");
 
                     b.ToTable("Admins");
+
+                    b.HasData(
+                        new
+                        {
+                            AdminId = 98798791,
+                            AdminEmail = "admin@example.com",
+                            AdminName = "SuperAdmin",
+                            AdminPassword = "Admin@123"
+                        });
                 });
 
             modelBuilder.Entity("E_Commerce_Website.Models.Cart", b =>
@@ -150,6 +159,15 @@ namespace E_Commerce_Website.Migrations
                     b.HasKey("CustomerId");
 
                     b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerId = 187987987,
+                            CustomerEmail = "customer@example.com",
+                            CustomerName = "Default Customer",
+                            CustomerPassword = "Customer@123"
+                        });
                 });
 
             modelBuilder.Entity("E_Commerce_Website.Models.Faqs", b =>

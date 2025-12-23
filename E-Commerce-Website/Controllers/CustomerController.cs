@@ -109,6 +109,7 @@ namespace E_Commerce_Website.Controllers
             // 🔹 Validate uniqueness
             if (_context.Customers.Any(c => c.CustomerEmail == customer.CustomerEmail))
             {
+                
                 ModelState.AddModelError("CustomerEmail", "Email already registered.");
                 return View("CustomerLogin", customer);
             }
@@ -254,6 +255,11 @@ namespace E_Commerce_Website.Controllers
             }
 
             return RedirectToAction("CustomerProfile");
+        }
+        [HttpGet]
+        public IActionResult Feedback()
+        {
+            return View();
         }
 
         // ✅ Feedback
