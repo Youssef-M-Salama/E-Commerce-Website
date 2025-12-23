@@ -15,7 +15,7 @@
         <div class="text-center mb-3">
             @if (!string.IsNullOrEmpty(Model.CustomerImage))
             {
-                <img src="~/CustomerImage/@Model.CustomerImage" 
+                <img src="~/ww@Model.CustomerImage" 
                      alt="Profile" class="rounded-circle mb-2" 
                      style="width: 120px; height: 120px; object-fit: cover;" />
             }
@@ -28,6 +28,7 @@
         </ul>
 
         <form asp-action="DeleteCustomer" method="post" class="d-grid gap-2">
+            @Html.AntiForgeryToken()
             <input type="hidden" name="id" value="@Model.CustomerId" />
             <button type="submit" class="btn btn-danger">✅ Yes, Delete Forever</button>
             <a asp-action="FetchCustomer" class="btn btn-outline-secondary">❌ Cancel</a>

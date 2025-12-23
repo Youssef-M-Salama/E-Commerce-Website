@@ -1,0 +1,12 @@
+D:\TestingCsharp\E-Commerce-Website\ImageManipulation\bin\Debug\net10.0\ImageManipulation.deps.json
+D:\TestingCsharp\E-Commerce-Website\ImageManipulation\bin\Debug\net10.0\ImageManipulation.dll
+D:\TestingCsharp\E-Commerce-Website\ImageManipulation\bin\Debug\net10.0\ImageManipulation.pdb
+D:\TestingCsharp\E-Commerce-Website\ImageManipulation\obj\Debug\net10.0\ImageManipulation.GeneratedMSBuildEditorConfig.editorconfig
+D:\TestingCsharp\E-Commerce-Website\ImageManipulation\obj\Debug\net10.0\ImageManipulation.AssemblyInfoInputs.cache
+D:\TestingCsharp\E-Commerce-Website\ImageManipulation\obj\Debug\net10.0\ImageManipulation.AssemblyInfo.cs
+D:\TestingCsharp\E-Commerce-Website\ImageManipulation\obj\Debug\net10.0\ImageManipulation.csproj.CoreCompileInputs.cache
+D:\TestingCsharp\E-Commerce-Website\ImageManipulation\obj\Debug\net10.0\ImageManipulation.sourcelink.json
+D:\TestingCsharp\E-Commerce-Website\ImageManipulation\obj\Debug\net10.0\ImageManipulation.dll
+D:\TestingCsharp\E-Commerce-Website\ImageManipulation\obj\Debug\net10.0\refint\ImageManipulation.dll
+D:\TestingCsharp\E-Commerce-Website\ImageManipulation\obj\Debug\net10.0\ImageManipulation.pdb
+D:\TestingCsharp\E-Commerce-Website\ImageManipulation\obj\Debug\net10.0\ref\ImageManipulation.dll

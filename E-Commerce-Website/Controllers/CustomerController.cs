@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using E_Commerce_Website.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGeneration;
 
 namespace E_Commerce_Website.Controllers
 {
@@ -9,11 +11,17 @@ namespace E_Commerce_Website.Controllers
     {
         private readonly myContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IFileService _fileService;
+        private readonly string[] _allowedFileExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
+        private readonly int _defaultMaxFileSizeInMB = 5;
 
-        public CustomerController(myContext context, IWebHostEnvironment webHostEnvironment)
+
+        public CustomerController(myContext context, IWebHostEnvironment webHostEnvironment, IFileService fileService)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _fileService = fileService;
+           
         }
 
         // ✅ Helper: Get logged-in customer ID or redirect
@@ -109,7 +117,7 @@ namespace E_Commerce_Website.Controllers
             // 🔹 Validate uniqueness
             if (_context.Customers.Any(c => c.CustomerEmail == customer.CustomerEmail))
             {
-                
+
                 ModelState.AddModelError("CustomerEmail", "Email already registered.");
                 return View("CustomerLogin", customer);
             }
@@ -205,57 +213,51 @@ namespace E_Commerce_Website.Controllers
             var customer = _context.Customers.Find(customerId);
             if (customer == null) return NotFound();
 
-            if (customerImage?.Length > 0)
+            if (customerImage != null && customerImage.Length > 0)
             {
-                // 🔹 Validate file: type & size
-                var ext = Path.GetExtension(customerImage.FileName).ToLowerInvariant();
-                if (!new[] { ".jpg", ".jpeg", ".png", ".gif" }.Contains(ext))
-                {
-                    ModelState.AddModelError("customerImage", "Only JPG/PNG/GIF allowed.");
-                    return View("CustomerProfile", customer);
-                }
-
-                if (customerImage.Length > 5 * 1024 * 1024) // 5 MB
-                {
-                    ModelState.AddModelError("customerImage", "Max file size: 5 MB.");
-                    return View("CustomerProfile", customer);
-                }
-
                 try
                 {
-                    var uploadFolder = Path.Combine(_webHostEnvironment.WebRootPath, "CustomerImage");
-                    Directory.CreateDirectory(uploadFolder);
+                    // ===============================
+                    // Use FileService
+                    // ===============================
 
-                    var newFileName = Guid.NewGuid() + ext;
-                    var filePath = Path.Combine(uploadFolder, newFileName);
+                    // Save new image
+                    var result = await _fileService.SaveFileAsync(
+                        customerImage,
+                        _allowedFileExtensions,
+                        "CustomerImage",
+                        _defaultMaxFileSizeInMB
+                    );
 
-                    // 🔹 Save new
-                    await using (var stream = new FileStream(filePath, FileMode.Create))
+                    if (!result.IsSaved)
                     {
-                        await customerImage.CopyToAsync(stream);
+                        ModelState.AddModelError("customerImage", result.Message);
+                        return View("CustomerProfile", customer);
                     }
 
-                    // 🔹 Delete old
+                    // Delete old image
                     if (!string.IsNullOrEmpty(customer.CustomerImage))
                     {
-                        var oldPath = Path.Combine(uploadFolder, customer.CustomerImage);
-                        if (System.IO.File.Exists(oldPath))
-                            System.IO.File.Delete(oldPath);
+                        _fileService.DeleteFile(Path.Combine("CustomerImage", customer.CustomerImage));
                     }
 
-                    customer.CustomerImage = newFileName;
+                    // Update DB
+                    customer.CustomerImage = Path.GetFileName(result.FilePath);
                     _context.SaveChanges();
+
                     TempData["Success"] = "Profile image updated!";
                 }
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("", "Failed to upload image.");
-                    // Log: _logger?.LogError(ex, "Image upload failed");
                 }
             }
 
             return RedirectToAction("CustomerProfile");
         }
+
+
+ 
         [HttpGet]
         public IActionResult Feedback()
         {
@@ -404,13 +406,13 @@ namespace E_Commerce_Website.Controllers
 
             return Json(new { count });
         }
-         [HttpPost]
+        [HttpPost]
         public IActionResult AddToCartFromDetails(int productId, int quantity = 1)
         {
             return AddToCart(productId, quantity);
         }
 
-        // ✅ Helper: Simple email validation (no regex overkill)
+        //  Helper: Simple email validation (no regex overkill)
         private bool IsValidEmail(string email)
         {
             try

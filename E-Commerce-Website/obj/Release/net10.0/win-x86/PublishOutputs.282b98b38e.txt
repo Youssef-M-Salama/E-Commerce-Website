@@ -290,4 +290,6 @@ D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\obj\Release\net10.0\win-x
 D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\obj\Release\net10.0\win-x86\PubTmp\Out\zh-Hans\Microsoft.Data.SqlClient.resources.dll
 D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\obj\Release\net10.0\win-x86\PubTmp\Out\zh-Hant\Microsoft.Data.SqlClient.resources.dll
 D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\obj\Release\net10.0\win-x86\PubTmp\Out\Microsoft.Data.SqlClient.SNI.dll
+D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\obj\Release\net10.0\win-x86\PubTmp\Out\ImageManipulation.dll
+D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\obj\Release\net10.0\win-x86\PubTmp\Out\ImageManipulation.pdb
 D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\obj\Release\net10.0\win-x86\PubTmp\Out\E-Commerce-Website.deps.json

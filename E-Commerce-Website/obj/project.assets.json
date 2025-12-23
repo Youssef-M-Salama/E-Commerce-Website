@@ -2739,6 +2739,16 @@
             "rid": "win"
           }
         }
+      },
+      "ImageManipulation/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/ImageManipulation.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ImageManipulation.dll": {}
+        }
       }
     }
   },
@@ -6695,10 +6705,16 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "ImageManipulation/1.0.0": {
+      "type": "project",
+      "path": "../ImageManipulation/ImageManipulation.csproj",
+      "msbuildProject": "../ImageManipulation/ImageManipulation.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "ImageManipulation >= 1.0.0",
       "Microsoft.Build >= 18.0.2",
       "Microsoft.EntityFrameworkCore >= 10.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 10.0.0",
@@ -6739,7 +6755,11 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\TestingCsharp\\E-Commerce-Website\\ImageManipulation\\ImageManipulation.csproj": {
+              "projectPath": "D:\\TestingCsharp\\E-Commerce-Website\\ImageManipulation\\ImageManipulation.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

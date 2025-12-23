@@ -13,7 +13,7 @@
         <div class="text-center mb-3">
             @if (!string.IsNullOrEmpty(Model.ProductImage))
             {
-                <img src="~/ProductImage/@Model.ProductImage"
+                <img src="@Model.ProductImage"
                      alt="@Model.ProductName"
                      class="img-thumbnail"
                      style="max-height: 200px; object-fit: cover;" />
@@ -28,6 +28,7 @@
         </ul>
 
         <form asp-action="DeleteProduct" method="post" class="d-grid gap-2">
+            @Html.AntiForgeryToken()
             <input type="hidden" name="id" value="@Model.ProductId" />
             <button type="submit" class="btn btn-danger">✅ Delete Product</button>
             <a asp-action="FetchProduct" class="btn btn-outline-secondary">❌ Cancel</a>

@@ -42,7 +42,7 @@
                 <label class="form-label">Current Image</label>
                 @if (!string.IsNullOrEmpty(Model.ProductImage))
                 {
-                    <img src="~/ProductImage/@Model.ProductImage" 
+                    <img src="@Model.ProductImage" 
                          alt="@Model.ProductName" class="img-thumbnail mb-2"
                          style="max-height: 150px;" />
                 }

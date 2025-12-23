@@ -9,6 +9,7 @@
     ".NETCoreApp,Version=v10.0/win-x86": {
       "E-Commerce-Website/1.0.0": {
         "dependencies": {
+          "ImageManipulation": "1.0.0",
           "Microsoft.Build": "18.0.2",
           "Microsoft.EntityFrameworkCore": "10.0.0",
           "Microsoft.EntityFrameworkCore.Design": "10.0.0",
@@ -1916,6 +1917,14 @@
             "fileVersion": "9.0.24.52809"
           }
         }
+      },
+      "ImageManipulation/1.0.0": {
+        "runtime": {
+          "ImageManipulation.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -2799,6 +2808,11 @@
       "sha512": "sha512-U9msthvnH2Fsw7xwAvIhNHOdnIjOQTwOc8Vd0oGOsiRcGMGoBFlUD6qtYawRUoQdKH9ysxesZ9juFElt1Jw/7A==",
       "path": "system.windows.extensions/9.0.0",
       "hashPath": "system.windows.extensions.9.0.0.nupkg.sha512"
+    },
+    "ImageManipulation/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

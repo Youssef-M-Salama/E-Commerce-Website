@@ -5,7 +5,7 @@
         var categories = ViewData["Categories"] as List<E_Commerce_Website.Models.Category>;
     }
 
-    <h2>@ViewBag.checkSession</h2>
+    @* <h2>@ViewBag.checkSession</h2> *@
 
     <main class="main">
         <div class="mb-2"></div>
@@ -154,7 +154,7 @@
                                     <div class="product">
                                         <figure class="product-media">
                                             <a href="@Url.Action("ProductDetails", "Customer", new { id = product.ProductId })">
-                                                <img src="~/ProductImage/@product.ProductImage" alt="@product.ProductName" class="product-image">
+                                                <img src="@product.ProductImage" alt="@product.ProductName" class="product-image">
                                             </a>
                                             <div class="product-action-vertical">
                                                 <a href="#" class="btn-product-icon btn-wishlist" title="Add to Wishlist"><span>add to wishlist</span></a>

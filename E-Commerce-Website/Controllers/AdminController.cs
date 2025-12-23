@@ -9,11 +9,13 @@ namespace E_Commerce_Website.Controllers
     {
         private readonly myContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        // private readonly ILogger<AdminController> _logger; // 🔔 Add later if using DI logging
-
-        public AdminController(myContext context, IWebHostEnvironment webHostEnvironment)
+        private readonly IFileService _fileService;
+        private readonly string[] _allowedFileExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
+        private readonly int _defaultMaxFileSizeInMB = 5;
+        public AdminController(myContext context, IWebHostEnvironment webHostEnvironment, IFileService fileService)
         {
             _context = context;
+            _fileService = fileService;
             _webHostEnvironment = webHostEnvironment;
         }
 
@@ -143,7 +145,6 @@ namespace E_Commerce_Website.Controllers
             return View(existing);
         }
 
-        // ✅ ChangeProfileImage
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangeProfileImage(IFormFile imageFile)
@@ -161,44 +162,34 @@ namespace E_Commerce_Website.Controllers
                 return View("Profile", admin);
             }
 
-            // ✅ Validate file type & size (optional but recommended)
-            var allowedTypes = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-            var extension = Path.GetExtension(imageFile.FileName).ToLowerInvariant();
-            if (!allowedTypes.Contains(extension))
-            {
-                ModelState.AddModelError("imageFile", "Only JPG, PNG, and GIF files are allowed.");
-                return View("Profile", admin);
-            }
-
-            if (imageFile.Length > 5 * 1024 * 1024) // 5 MB
-            {
-                ModelState.AddModelError("imageFile", "File size must not exceed 5 MB.");
-                return View("Profile", admin);
-            }
-
             try
             {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "AdminImage");
-                Directory.CreateDirectory(uploadsFolder);
-
-                string newFileName = Guid.NewGuid() + extension;
-                string filePath = Path.Combine(uploadsFolder, newFileName);
+                // ===============================
+                // Use FileService
+                // ===============================
 
                 // Save new image
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                var result = await _fileService.SaveFileAsync(
+                    imageFile,
+                    _allowedFileExtensions,
+                    "AdminImage",
+                    _defaultMaxFileSizeInMB
+                );
+
+                if (!result.IsSaved)
                 {
-                    await imageFile.CopyToAsync(stream);
+                    ModelState.AddModelError("imageFile", result.Message);
+                    return View("Profile", admin);
                 }
 
                 // Delete old image (if exists)
                 if (!string.IsNullOrEmpty(admin.AdminImage))
                 {
-                    string oldPath = Path.Combine(uploadsFolder, admin.AdminImage);
-                    if (System.IO.File.Exists(oldPath))
-                        System.IO.File.Delete(oldPath);
+                    _fileService.DeleteFile(admin.AdminImage);
                 }
 
-                admin.AdminImage = newFileName;
+                //  Store the FULL relative path (e.g., "/AdminImage/guid.jpg")
+                admin.AdminImage = result.FilePath;
                 _context.SaveChanges();
 
                 TempData["Success"] = "Profile image updated!";
@@ -206,13 +197,12 @@ namespace E_Commerce_Website.Controllers
             }
             catch (Exception ex)
             {
-                // _logger?.LogError(ex, "Image upload failed.");
                 ModelState.AddModelError("", "Failed to upload image. Please try again.");
                 return View("Profile", admin);
             }
         }
 
-        // ✅ FetchCustomer
+        //  FetchCustomer
         public IActionResult FetchCustomer()
         {
             var guard = RedirectToLoginIfUnauthorized();
@@ -221,7 +211,7 @@ namespace E_Commerce_Website.Controllers
             return View(_context.Customers.ToList());
         }
 
-        // ✅ UpdateCustomer (GET)
+        // UpdateCustomer (GET)
         [HttpGet]
         public IActionResult UpdateCustomer(int id)
         {
@@ -233,13 +223,13 @@ namespace E_Commerce_Website.Controllers
             return View(customer);
         }
 
-        // ✅ UpdateCustomer (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateCustomer(
-            [Bind("CustomerId,CustomerName,CustomerEmail,CustomerPhone,CustomerPassword,CustomerGender,CustomerCountry,CustomerCity,CustomerAddress")]
-            Customer customer,
-            IFormFile customerImage)
+    [Bind("CustomerId,CustomerName,CustomerEmail,CustomerPhone,CustomerGender,CustomerCountry,CustomerCity,CustomerAddress")]
+    Customer customer,
+    string CustomerPassword,
+    IFormFile customerImage)
         {
             var guard = RedirectToLoginIfUnauthorized();
             if (guard != null) return guard;
@@ -255,6 +245,12 @@ namespace E_Commerce_Website.Controllers
                 ModelState.AddModelError("CustomerEmail", "A customer with this email already exists.");
             }
 
+            // ✅ Remove password validation errors if empty
+            if (string.IsNullOrWhiteSpace(CustomerPassword))
+            {
+                ModelState.Remove("CustomerPassword");
+            }
+
             if (ModelState.IsValid)
             {
                 // Update scalar properties
@@ -267,34 +263,44 @@ namespace E_Commerce_Website.Controllers
                 existing.CustomerAddress = customer.CustomerAddress;
 
                 // Update password only if provided
-                if (!string.IsNullOrWhiteSpace(customer.CustomerPassword))
-                    existing.CustomerPassword = customer.CustomerPassword; // ⚠️ Hash later!
+                if (!string.IsNullOrWhiteSpace(CustomerPassword))
+                    existing.CustomerPassword = CustomerPassword;
 
-                // Handle image
+                // ===============================
+                // Handle image with FileService
+                // ===============================
                 if (customerImage?.Length > 0)
                 {
-                    var uploadFolder = Path.Combine(_webHostEnvironment.WebRootPath, "CustomerImage");
-                    Directory.CreateDirectory(uploadFolder);
-
-                    var extension = Path.GetExtension(customerImage.FileName);
-                    var newFileName = Guid.NewGuid() + extension;
-                    var filePath = Path.Combine(uploadFolder, newFileName);
-
-                    // Save new
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    try
                     {
-                        await customerImage.CopyToAsync(stream);
-                    }
+                        // Save new image
+                        var result = await _fileService.SaveFileAsync(
+                            customerImage,
+                            _allowedFileExtensions,
+                            "CustomerImage",
+                            _defaultMaxFileSizeInMB
+                        );
 
-                    // Delete old
-                    if (!string.IsNullOrEmpty(existing.CustomerImage))
+                        if (!result.IsSaved)
+                        {
+                            ModelState.AddModelError("customerImage", result.Message);
+                            return View(customer);
+                        }
+
+                        // Delete old image
+                        if (!string.IsNullOrEmpty(existing.CustomerImage))
+                        {
+                            _fileService.DeleteFile(existing.CustomerImage);
+                        }
+
+                        // Store full relative path
+                        existing.CustomerImage = result.FilePath;
+                    }
+                    catch (Exception ex)
                     {
-                        var oldPath = Path.Combine(uploadFolder, existing.CustomerImage);
-                        if (System.IO.File.Exists(oldPath))
-                            System.IO.File.Delete(oldPath);
+                        ModelState.AddModelError("", "Failed to upload image.");
+                        return View(customer);
                     }
-
-                    existing.CustomerImage = newFileName;
                 }
 
                 try
@@ -311,6 +317,8 @@ namespace E_Commerce_Website.Controllers
 
             return View(customer);
         }
+
+
 
         // ✅ CustomerDetails
         public IActionResult CustomerDetails(int id)
@@ -334,7 +342,6 @@ namespace E_Commerce_Website.Controllers
             return View(customer);
         }
 
-        // ✅ DeleteCustomer
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteCustomer(int id)
@@ -345,16 +352,16 @@ namespace E_Commerce_Website.Controllers
             var customer = _context.Customers.Find(id);
             if (customer == null) return NotFound();
 
-            // ✅ Optional: Delete associated cart items
+            //  Optional: Delete associated cart items
             var cartItems = _context.Carts.Where(c => c.CustomerId == id);
             _context.Carts.RemoveRange(cartItems);
 
-            // ✅ Delete image
+            // ===============================
+            // Delete image using FileService
+            // ===============================
             if (!string.IsNullOrEmpty(customer.CustomerImage))
             {
-                var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "CustomerImage", customer.CustomerImage);
-                if (System.IO.File.Exists(imagePath))
-                    System.IO.File.Delete(imagePath);
+                _fileService.DeleteFile(customer.CustomerImage);
             }
 
             _context.Customers.Remove(customer);
@@ -511,8 +518,8 @@ namespace E_Commerce_Website.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddProduct(
-     [Bind("ProductName,ProductPrice,ProductDescription,CategoryId")] Product product,
-     IFormFile productImage)
+    [Bind("ProductName,ProductPrice,ProductDescription,CategoryId")] Product product,
+    IFormFile productImage)
         {
             var guard = RedirectToLoginIfUnauthorized();
             if (guard != null) return guard;
@@ -525,42 +532,34 @@ namespace E_Commerce_Website.Controllers
             {
                 ModelState.AddModelError("productImage", "Product image is required.");
             }
-            else
-            {
-                var ext = Path.GetExtension(productImage.FileName).ToLowerInvariant();
-                if (!new[] { ".jpg", ".jpeg", ".png" }.Contains(ext))
-                    ModelState.AddModelError("productImage", "Only JPG/PNG images allowed.");
-                else if (productImage.Length > 10 * 1024 * 1024)
-                    ModelState.AddModelError("productImage", "Max file size: 10 MB.");
-            }
 
-            // ✅ Assign image to product BEFORE checking ModelState
-            if (productImage != null && productImage.Length > 0)
-            {
-                var uploadFolder = Path.Combine(_webHostEnvironment.WebRootPath, "ProductImage");
-                Directory.CreateDirectory(uploadFolder);
-
-                var newFileName = Guid.NewGuid() + Path.GetExtension(productImage.FileName);
-                var filePath = Path.Combine(uploadFolder, newFileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await productImage.CopyToAsync(stream);
-                }
-
-                // Set the product's image property here
-                product.ProductImage = newFileName;
-            }
-
-            // Now check ModelState
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && productImage != null && productImage.Length > 0)
             {
                 try
                 {
+                    // ===============================
+                    // Use FileService
+                    // ===============================
+                    var result = await _fileService.SaveFileAsync(
+                        productImage,
+                        _allowedFileExtensions,
+                        "ProductImage",
+                        10
+                    );
+
+                    if (!result.IsSaved)
+                    {
+                        ModelState.AddModelError("productImage", result.Message);
+                        return View(product);
+                    }
+
+                    //  Store full relative path
+                    product.ProductImage = result.FilePath;
+
                     _context.Products.Add(product);
                     await _context.SaveChangesAsync();
 
-                    TempData["Success"] = $"{product.ProductName} added.";
+                    TempData["Success"] = $"{product.ProductName} added successfully!";
                     return RedirectToAction("FetchProduct");
                 }
                 catch (Exception)
@@ -569,7 +568,6 @@ namespace E_Commerce_Website.Controllers
                 }
             }
 
-            // If validation fails, return the view with product (and categories)
             return View(product);
         }
 
@@ -596,7 +594,6 @@ namespace E_Commerce_Website.Controllers
             return View(product);
         }
 
-        // ✅ DeleteProduct
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteProduct(int id)
@@ -607,26 +604,20 @@ namespace E_Commerce_Website.Controllers
             var product = _context.Products.Find(id);
             if (product == null) return NotFound();
 
-            // ✅ Delete image
+            // ===============================
+            // Delete image using FileService
+            // ===============================
             if (!string.IsNullOrEmpty(product.ProductImage))
             {
-                var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "ProductImage", product.ProductImage);
-                if (System.IO.File.Exists(imagePath))
-                    System.IO.File.Delete(imagePath);
+                _fileService.DeleteFile(product.ProductImage);
             }
-
-            // ✅ Remove from carts (optional but clean)
-            var cartItems = _context.Carts.Where(c => c.ProductId == id);
-            _context.Carts.RemoveRange(cartItems);
 
             _context.Products.Remove(product);
             _context.SaveChanges();
 
-            TempData["Success"] = "Product deleted.";
+            TempData["Success"] = $"{product.ProductName} deleted successfully!";
             return RedirectToAction("FetchProduct");
         }
-
-        // ✅ UpdateProduct (GET/POST)
         [HttpGet]
         public IActionResult UpdateProduct(int id)
         {
@@ -639,12 +630,11 @@ namespace E_Commerce_Website.Controllers
             ViewData["Categories"] = _context.Categories.ToList();
             return View(product);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateProduct(
-            [Bind("ProductId,ProductName,ProductPrice,ProductDescription,CategoryId")] Product product,
-            IFormFile productImage)
+    [Bind("ProductId,ProductName,ProductPrice,ProductDescription,CategoryId")] Product product,
+    IFormFile productImage)
         {
             var guard = RedirectToLoginIfUnauthorized();
             if (guard != null) return guard;
@@ -652,60 +642,67 @@ namespace E_Commerce_Website.Controllers
             var existing = _context.Products.Find(product.ProductId);
             if (existing == null) return NotFound();
 
+            // Populate categories for dropdown if validation fails
             ViewData["Categories"] = _context.Categories.ToList();
 
             if (ModelState.IsValid)
             {
-                // Update properties
+                // Update scalar properties
                 existing.ProductName = product.ProductName;
                 existing.ProductPrice = product.ProductPrice;
                 existing.ProductDescription = product.ProductDescription;
                 existing.CategoryId = product.CategoryId;
 
-                // Handle image
+                // ===============================
+                // Handle image with FileService
+                // ===============================
                 if (productImage?.Length > 0)
                 {
-                    var uploadFolder = Path.Combine(_webHostEnvironment.WebRootPath, "ProductImage");
-                    Directory.CreateDirectory(uploadFolder);
-
-                    // Delete old
-                    if (!string.IsNullOrEmpty(existing.ProductImage))
+                    try
                     {
-                        var oldPath = Path.Combine(uploadFolder, existing.ProductImage);
-                        if (System.IO.File.Exists(oldPath))
-                            System.IO.File.Delete(oldPath);
+                        // Save new image
+                        var result = await _fileService.SaveFileAsync(
+                            productImage,
+                            _allowedFileExtensions,
+                            "ProductImage",
+                            10
+                        );
+
+                        if (!result.IsSaved)
+                        {
+                            ModelState.AddModelError("productImage", result.Message);
+                            return View(product);
+                        }
+
+                        // Delete old image
+                        if (!string.IsNullOrEmpty(existing.ProductImage))
+                        {
+                            _fileService.DeleteFile(existing.ProductImage);
+                        }
+
+                        // ✅ Store full relative path
+                        existing.ProductImage = result.FilePath;
                     }
-
-                    // Save new
-                    var newFileName = Guid.NewGuid() + Path.GetExtension(productImage.FileName);
-                    var filePath = Path.Combine(uploadFolder, newFileName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    catch (Exception ex)
                     {
-                        await productImage.CopyToAsync(stream);
+                        ModelState.AddModelError("", "Failed to upload image.");
+                        return View(product);
                     }
-
-                    existing.ProductImage = newFileName;
                 }
 
                 try
                 {
                     _context.SaveChanges();
-                    TempData["Success"] = "Product updated!";
+                    TempData["Success"] = $"{product.ProductName} updated successfully!";
                     return RedirectToAction("FetchProduct");
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Failed to update product.");
+                    ModelState.AddModelError("", "Failed to save changes.");
                 }
             }
 
-            // Repopulate for re-display
-            existing.ProductName = product.ProductName; // rebind changed values
-            existing.ProductPrice = product.ProductPrice;
-            existing.ProductDescription = product.ProductDescription;
-            existing.CategoryId = product.CategoryId;
-            return View("UpdateProduct", existing);
+            return View(product);
         }
 
         // ✅ FetchFeedback

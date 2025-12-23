@@ -1,4 +1,4 @@
-﻿@model Customer
+﻿@model E_Commerce_Website.Models.Customer
 
 @{
     ViewData["Title"] = "CustomerProfile";
@@ -12,44 +12,50 @@
         <div class="col-md-8">
             <h4 class="mb-3">Customer Profile</h4>
 
-
+            <!-- ============================= -->
             <!-- Change Image Form -->
-            <form asp-action="ChangeProfileImage" enctype="multipart/form-data">
+            <!-- ============================= -->
+            <form asp-action="ChangeProfileImage" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="customerId" value="@Model.CustomerId" />
-                <img src="~/CustomerImage/@Model.CustomerImage" style="height:200px;width:200px" />
-                <input type="file" name="customerImage" />
+
+                <div class="mb-2">
+                    <img src="@(string.IsNullOrEmpty(Model.CustomerImage) ? "/images/default-avatar.png" : Model.CustomerImage)"
+                         style="height:200px;width:200px;object-fit:cover;border-radius:5px;" />
+                </div>
+
+                <div class="mb-2">
+                    <input type="file" name="customerImage" accept=".jpg,.jpeg,.png,.gif" class="form-control" />
+                    @if (ViewData.ModelState["customerImage"]?.Errors.Count > 0)
+                    {
+                        <span class="text-danger">@ViewData.ModelState["customerImage"].Errors[0].ErrorMessage</span>
+                    }
+                </div>
+
                 <button type="submit" class="btn btn-primary">Change Image</button>
             </form>
 
             <hr />
 
+            <!-- ============================= -->
             <!-- Profile Data Form -->
-            <form asp-action="CustomerProfile" asp-controller="Customer">
-
-                <!-- IMPORTANT hidden fields -->
+            <!-- ============================= -->
+            <form asp-action="CustomerProfile" asp-controller="Customer" method="post">
                 <input type="hidden" name="CustomerId" value="@Model.CustomerId" />
                 <input type="hidden" name="CustomerPassword" value="@Model.CustomerPassword" />
-                <input type="hidden" name="CustomerImage" value="@Model.CustomerImage" />
 
                 <div class="form-group mb-2">
                     <label>Username</label>
-                    <input class="form-control"
-                           name="CustomerName"
-                           value="@Model.CustomerName" />
+                    <input class="form-control" name="CustomerName" value="@Model.CustomerName" />
                 </div>
 
                 <div class="form-group mb-2">
                     <label>Email</label>
-                    <input class="form-control"
-                           name="CustomerEmail"
-                           value="@Model.CustomerEmail" />
+                    <input class="form-control" name="CustomerEmail" value="@Model.CustomerEmail" />
                 </div>
 
                 <div class="form-group mb-2">
                     <label>Phone</label>
-                    <input class="form-control"
-                           name="CustomerPhone"
-                           value="@Model.CustomerPhone" />
+                    <input class="form-control" name="CustomerPhone" value="@Model.CustomerPhone" />
                 </div>
 
                 <div class="form-group mb-2">
@@ -63,22 +69,17 @@
 
                 <div class="form-group mb-2">
                     <label>Country</label>
-                    <input class="form-control"
-                           name="CustomerCountry"
-                           value="@Model.CustomerCountry" />
+                    <input class="form-control" name="CustomerCountry" value="@Model.CustomerCountry" />
                 </div>
 
                 <div class="form-group mb-2">
                     <label>City</label>
-                    <input class="form-control"
-                           name="CustomerCity"
-                           value="@Model.CustomerCity" />
+                    <input class="form-control" name="CustomerCity" value="@Model.CustomerCity" />
                 </div>
 
                 <div class="form-group mb-3">
                     <label>Address</label>
-                    <textarea class="form-control"
-                              name="CustomerAddress">@Model.CustomerAddress</textarea>
+                    <textarea class="form-control" name="CustomerAddress">@Model.CustomerAddress</textarea>
                 </div>
 
                 <button type="submit" class="btn btn-outline-primary">

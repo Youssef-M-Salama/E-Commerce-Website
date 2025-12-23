@@ -1,3 +1,4 @@
+using E_Commerce_Website;
 using E_Commerce_Website.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IFileService, FileService>();
 
 builder.Services.AddDbContext<myContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("myconnection")));
@@ -33,6 +35,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseSession();
 app.UseAuthorization();
+app.UseStaticFiles();
 
 app.MapStaticAssets();
 

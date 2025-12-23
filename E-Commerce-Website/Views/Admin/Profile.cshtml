@@ -10,7 +10,6 @@
 
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <!-- Update Info -->
         <form asp-action="Profile" asp-controller="admin" method="post">
             @Html.AntiForgeryToken()
             <input type="hidden" asp-for="AdminId" />
@@ -34,22 +33,22 @@
             <button type="submit" class="btn btn-primary w-100">Update Profile</button>
         </form>
 
-        <!-- Update Image -->
         <hr />
         <h5>Profile Image</h5>
         <form asp-action="ChangeProfileImage" asp-controller="Admin" method="post" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
-            <input type="hidden" asp-for="AdminId" />
-            <input type="hidden" asp-for="AdminName" />
-            <input type="hidden" asp-for="AdminEmail" />
-            <input type="hidden" asp-for="AdminPassword" />
-            <input type="hidden" asp-for="AdminImage" />
 
             <div class="mb-3">
                 @if (!string.IsNullOrEmpty(Model.AdminImage))
                 {
-                    <img src="~/AdminImage/@Model.AdminImage" 
+                    <img src="@Model.AdminImage" 
                          alt="Profile" class="img-thumbnail mb-2"
+                         style="max-height: 150px; width: auto;" />
+                }
+                else
+                {
+                    <img src="~/images/default-avatar.png" 
+                         alt="Default Profile" class="img-thumbnail mb-2"
                          style="max-height: 150px; width: auto;" />
                 }
             </div>
