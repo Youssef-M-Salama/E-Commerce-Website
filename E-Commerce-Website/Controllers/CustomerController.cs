@@ -391,7 +391,7 @@ namespace E_Commerce_Website.Controllers
             return RedirectToAction("ViewCart");
         }
 
-        // ✅ Get Cart Count (for AJAX badge)
+        //  Get Cart Count (for AJAX badge) soon
         [HttpGet]
         public IActionResult GetCartCount()
         {

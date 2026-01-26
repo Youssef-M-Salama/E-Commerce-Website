@@ -485,8 +485,7 @@ D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\obj\Debug\net10.0\compres
 D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\obj\Debug\net10.0\compressed\cftct3ym6n-{0}-7jzz5xmmu1-7jzz5xmmu1.gz
 D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\bin\Debug\net10.0\ImageManipulation.dll
 D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\bin\Debug\net10.0\ImageManipulation.pdb
-D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
 D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\obj\Debug\net10.0\compressed\kooh9o3g8r-{0}-qy9fst3a5v-qy9fst3a5v.gz
 D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\obj\Debug\net10.0\compressed\fr9ib02kfu-{0}-g47icnuyai-g47icnuyai.gz
 D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\obj\Debug\net10.0\compressed\mywwo0f38x-{0}-aqm0qz2cmp-aqm0qz2cmp.gz
-D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\obj\Debug\net10.0\compressed\fziakg1ajl-{0}-n1s1f1bxpm-n1s1f1bxpm.gz
+D:\TestingCsharp\E-Commerce-Website\E-Commerce-Website\obj\Debug\net10.0\compressed\fziakg1ajl-{0}-e5i3wkk6u2-e5i3wkk6u2.gz
