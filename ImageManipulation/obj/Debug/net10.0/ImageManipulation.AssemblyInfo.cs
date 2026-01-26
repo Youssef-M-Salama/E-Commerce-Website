@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ImageManipulation")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+54694751c9e3366970a838f975309d78308f934b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4e67dcb86b0f12390169ffd8a8163e4d9608d4e8")]
 [assembly: System.Reflection.AssemblyProductAttribute("ImageManipulation")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ImageManipulation")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
